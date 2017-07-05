@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ApiCall">
+    <Key>
+      <PropertyRef Name="ApiCallId" />
+    </Key>
+    <Property Name="ApiCallId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ApiCallRecord" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="BackgroundCallLog">
+    <Key>
+      <PropertyRef Name="BackgroundCallLogId" />
+    </Key>
+    <Property Name="BackgroundCallLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BackgroundCallLogTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="BackgroundCallLogMessage" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="BlobTable">
+    <Key>
+      <PropertyRef Name="BlobId" />
+    </Key>
+    <Property Name="BlobId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Blob" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="OriginalFileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Logs" Relationship="Self.FK_Logs_BlobTable" FromRole="BlobTable" ToRole="Logs" />
+  </EntityType>
+  <EntityType Name="File">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InputAsset">
+    <Key>
+      <PropertyRef Name="GUID" />
+      <PropertyRef Name="TargetEnvaironment" />
+    </Key>
+    <Property Name="GUID" Type="Guid" Nullable="false" />
+    <Property Name="TargetEnvaironment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DataField" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+  </EntityType>
+  <EntityType Name="Log">
+    <Key>
+      <PropertyRef Name="LogId" />
+    </Key>
+    <Property Name="LogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataFileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="BlobId" Type="Int32" />
+    <NavigationProperty Name="BlobTable" Relationship="Self.FK_Logs_BlobTable" FromRole="Logs" ToRole="BlobTable" />
+  </EntityType>
+  <EntityType Name="QRTZ_BLOB_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BLOB_DATA" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_CALENDARS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="CALENDAR_NAME" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CALENDAR_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CALENDAR" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_CRON_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CRON_EXPRESSION" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TIME_ZONE_ID" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="QRTZ_TRIGGERS" Relationship="Self.FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS" FromRole="QRTZ_CRON_TRIGGERS" ToRole="QRTZ_TRIGGERS" />
+  </EntityType>
+  <EntityType Name="QRTZ_FIRED_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="ENTRY_ID" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ENTRY_ID" Type="String" MaxLength="95" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="INSTANCE_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FIRED_TIME" Type="Int64" Nullable="false" />
+    <Property Name="SCHED_TIME" Type="Int64" Nullable="false" />
+    <Property Name="PRIORITY" Type="Int32" Nullable="false" />
+    <Property Name="STATE" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JOB_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="JOB_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="IS_NONCONCURRENT" Type="Boolean" />
+    <Property Name="REQUESTS_RECOVERY" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="QRTZ_JOB_DETAILS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="JOB_NAME" />
+      <PropertyRef Name="JOB_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JOB_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JOB_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="JOB_CLASS_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IS_DURABLE" Type="Boolean" Nullable="false" />
+    <Property Name="IS_NONCONCURRENT" Type="Boolean" Nullable="false" />
+    <Property Name="IS_UPDATE_DATA" Type="Boolean" Nullable="false" />
+    <Property Name="REQUESTS_RECOVERY" Type="Boolean" Nullable="false" />
+    <Property Name="JOB_DATA" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="QRTZ_TRIGGERS" Relationship="Self.FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS" FromRole="QRTZ_JOB_DETAILS" ToRole="QRTZ_TRIGGERS" />
+  </EntityType>
+  <EntityType Name="QRTZ_LOCKS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="LOCK_NAME" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LOCK_NAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_PAUSED_TRIGGER_GRPS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_SCHEDULER_STATE">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="INSTANCE_NAME" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="INSTANCE_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LAST_CHECKIN_TIME" Type="Int64" Nullable="false" />
+    <Property Name="CHECKIN_INTERVAL" Type="Int64" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_SIMPLE_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="REPEAT_COUNT" Type="Int32" Nullable="false" />
+    <Property Name="REPEAT_INTERVAL" Type="Int64" Nullable="false" />
+    <Property Name="TIMES_TRIGGERED" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="QRTZ_TRIGGERS" Relationship="Self.FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS" FromRole="QRTZ_SIMPLE_TRIGGERS" ToRole="QRTZ_TRIGGERS" />
+  </EntityType>
+  <EntityType Name="QRTZ_SIMPROP_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="STR_PROP_1" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+    <Property Name="STR_PROP_2" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+    <Property Name="STR_PROP_3" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+    <Property Name="INT_PROP_1" Type="Int32" />
+    <Property Name="INT_PROP_2" Type="Int32" />
+    <Property Name="LONG_PROP_1" Type="Int64" />
+    <Property Name="LONG_PROP_2" Type="Int64" />
+    <Property Name="DEC_PROP_1" Type="Decimal" Precision="13" Scale="4" />
+    <Property Name="DEC_PROP_2" Type="Decimal" Precision="13" Scale="4" />
+    <Property Name="BOOL_PROP_1" Type="Boolean" />
+    <Property Name="BOOL_PROP_2" Type="Boolean" />
+    <NavigationProperty Name="QRTZ_TRIGGERS" Relationship="Self.FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS" FromRole="QRTZ_SIMPROP_TRIGGERS" ToRole="QRTZ_TRIGGERS" />
+  </EntityType>
+  <EntityType Name="QRTZ_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JOB_NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="JOB_GROUP" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NEXT_FIRE_TIME" Type="Int64" />
+    <Property Name="PREV_FIRE_TIME" Type="Int64" />
+    <Property Name="PRIORITY" Type="Int32" />
+    <Property Name="TRIGGER_STATE" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TRIGGER_TYPE" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="START_TIME" Type="Int64" Nullable="false" />
+    <Property Name="END_TIME" Type="Int64" />
+    <Property Name="CALENDAR_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MISFIRE_INSTR" Type="Int32" />
+    <Property Name="JOB_DATA" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="QRTZ_CRON_TRIGGERS" Relationship="Self.FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS" FromRole="QRTZ_TRIGGERS" ToRole="QRTZ_CRON_TRIGGERS" />
+    <NavigationProperty Name="QRTZ_JOB_DETAILS" Relationship="Self.FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS" FromRole="QRTZ_TRIGGERS" ToRole="QRTZ_JOB_DETAILS" />
+    <NavigationProperty Name="QRTZ_SIMPLE_TRIGGERS" Relationship="Self.FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS" FromRole="QRTZ_TRIGGERS" ToRole="QRTZ_SIMPLE_TRIGGERS" />
+    <NavigationProperty Name="QRTZ_SIMPROP_TRIGGERS" Relationship="Self.FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS" FromRole="QRTZ_TRIGGERS" ToRole="QRTZ_SIMPROP_TRIGGERS" />
+  </EntityType>
+  <EntityType Name="ScheduledJob">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TriggerName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Score">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JsonData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TestAsset">
+    <Key>
+      <PropertyRef Name="GUID" />
+      <PropertyRef Name="TargerEnvaironment" />
+      <PropertyRef Name="BucketId" />
+    </Key>
+    <Property Name="GUID" Type="Guid" Nullable="false" />
+    <Property Name="TargerEnvaironment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DataField" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BucketId" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TestBucket">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="timeInserted" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="AggregatedCounter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Key" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Value" Type="Int64" Nullable="false" />
+    <Property Name="ExpireAt" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Counter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Key" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Value" Type="Int16" Nullable="false" />
+    <Property Name="ExpireAt" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Hash">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Key" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Field" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ExpireAt" Type="DateTime" Precision="7" />
+  </EntityType>
+  <EntityType Name="Job">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateId" Type="Int32" />
+    <Property Name="StateName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="InvocationData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Arguments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ExpireAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="JobParameters" Relationship="Self.FK_HangFire_JobParameter_Job" FromRole="Job" ToRole="JobParameter" />
+    <NavigationProperty Name="States" Relationship="Self.FK_HangFire_State_Job" FromRole="Job" ToRole="State" />
+  </EntityType>
+  <EntityType Name="JobParameter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Job" Relationship="Self.FK_HangFire_JobParameter_Job" FromRole="JobParameter" ToRole="Job" />
+  </EntityType>
+  <EntityType Name="JobQueue">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobId" Type="Int32" Nullable="false" />
+    <Property Name="Queue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FetchedAt" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="List">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Key" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ExpireAt" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Schema">
+    <Key>
+      <PropertyRef Name="Version" />
+    </Key>
+    <Property Name="Version" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Server">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastHeartbeat" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="Set">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Key" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Score" Type="Double" Nullable="false" />
+    <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ExpireAt" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="State">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobId" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Reason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Job" Relationship="Self.FK_HangFire_State_Job" FromRole="State" ToRole="Job" />
+  </EntityType>
+  <Association Name="FK_Logs_BlobTable">
+    <End Role="BlobTable" Type="Self.BlobTable" Multiplicity="0..1" />
+    <End Role="Logs" Type="Self.Log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BlobTable">
+        <PropertyRef Name="BlobId" />
+      </Principal>
+      <Dependent Role="Logs">
+        <PropertyRef Name="BlobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS">
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QRTZ_CRON_TRIGGERS" Type="Self.QRTZ_CRON_TRIGGERS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_CRON_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS">
+    <End Role="QRTZ_JOB_DETAILS" Type="Self.QRTZ_JOB_DETAILS" Multiplicity="1" />
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_JOB_DETAILS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="JOB_NAME" />
+        <PropertyRef Name="JOB_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="JOB_NAME" />
+        <PropertyRef Name="JOB_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS">
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QRTZ_SIMPLE_TRIGGERS" Type="Self.QRTZ_SIMPLE_TRIGGERS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_SIMPLE_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS">
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QRTZ_SIMPROP_TRIGGERS" Type="Self.QRTZ_SIMPROP_TRIGGERS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_SIMPROP_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HangFire_JobParameter_Job">
+    <End Role="Job" Type="Self.Job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="JobParameter" Type="Self.JobParameter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JobParameter">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HangFire_State_Job">
+    <End Role="Job" Type="Self.Job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="State" Type="Self.State" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="State">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ApiCalls" EntityType="Self.ApiCall" />
+    <EntitySet Name="BackgroundCallLogs" EntityType="Self.BackgroundCallLog" />
+    <EntitySet Name="BlobTables" EntityType="Self.BlobTable" />
+    <EntitySet Name="Files" EntityType="Self.File" />
+    <EntitySet Name="InputAssets" EntityType="Self.InputAsset" />
+    <EntitySet Name="Logs" EntityType="Self.Log" />
+    <EntitySet Name="QRTZ_BLOB_TRIGGERS" EntityType="Self.QRTZ_BLOB_TRIGGERS" />
+    <EntitySet Name="QRTZ_CALENDARS" EntityType="Self.QRTZ_CALENDARS" />
+    <EntitySet Name="QRTZ_CRON_TRIGGERS" EntityType="Self.QRTZ_CRON_TRIGGERS" />
+    <EntitySet Name="QRTZ_FIRED_TRIGGERS" EntityType="Self.QRTZ_FIRED_TRIGGERS" />
+    <EntitySet Name="QRTZ_JOB_DETAILS" EntityType="Self.QRTZ_JOB_DETAILS" />
+    <EntitySet Name="QRTZ_LOCKS" EntityType="Self.QRTZ_LOCKS" />
+    <EntitySet Name="QRTZ_PAUSED_TRIGGER_GRPS" EntityType="Self.QRTZ_PAUSED_TRIGGER_GRPS" />
+    <EntitySet Name="QRTZ_SCHEDULER_STATE" EntityType="Self.QRTZ_SCHEDULER_STATE" />
+    <EntitySet Name="QRTZ_SIMPLE_TRIGGERS" EntityType="Self.QRTZ_SIMPLE_TRIGGERS" />
+    <EntitySet Name="QRTZ_SIMPROP_TRIGGERS" EntityType="Self.QRTZ_SIMPROP_TRIGGERS" />
+    <EntitySet Name="QRTZ_TRIGGERS" EntityType="Self.QRTZ_TRIGGERS" />
+    <EntitySet Name="ScheduledJobs" EntityType="Self.ScheduledJob" />
+    <EntitySet Name="Scores" EntityType="Self.Score" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="TestAssets" EntityType="Self.TestAsset" />
+    <EntitySet Name="TestBuckets" EntityType="Self.TestBucket" />
+    <EntitySet Name="AggregatedCounters" EntityType="Self.AggregatedCounter" />
+    <EntitySet Name="Counters" EntityType="Self.Counter" />
+    <EntitySet Name="Hashes" EntityType="Self.Hash" />
+    <EntitySet Name="Jobs" EntityType="Self.Job" />
+    <EntitySet Name="JobParameters" EntityType="Self.JobParameter" />
+    <EntitySet Name="JobQueues" EntityType="Self.JobQueue" />
+    <EntitySet Name="Lists" EntityType="Self.List" />
+    <EntitySet Name="Schemata" EntityType="Self.Schema" />
+    <EntitySet Name="Servers" EntityType="Self.Server" />
+    <EntitySet Name="Sets" EntityType="Self.Set" />
+    <EntitySet Name="States" EntityType="Self.State" />
+    <AssociationSet Name="FK_Logs_BlobTable" Association="Self.FK_Logs_BlobTable">
+      <End Role="BlobTable" EntitySet="BlobTables" />
+      <End Role="Logs" EntitySet="Logs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS" Association="Self.FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS">
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+      <End Role="QRTZ_CRON_TRIGGERS" EntitySet="QRTZ_CRON_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS" Association="Self.FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS">
+      <End Role="QRTZ_JOB_DETAILS" EntitySet="QRTZ_JOB_DETAILS" />
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS" Association="Self.FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS">
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+      <End Role="QRTZ_SIMPLE_TRIGGERS" EntitySet="QRTZ_SIMPLE_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS" Association="Self.FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS">
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+      <End Role="QRTZ_SIMPROP_TRIGGERS" EntitySet="QRTZ_SIMPROP_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HangFire_JobParameter_Job" Association="Self.FK_HangFire_JobParameter_Job">
+      <End Role="Job" EntitySet="Jobs" />
+      <End Role="JobParameter" EntitySet="JobParameters" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HangFire_State_Job" Association="Self.FK_HangFire_State_Job">
+      <End Role="Job" EntitySet="Jobs" />
+      <End Role="State" EntitySet="States" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TestDbModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TestDbModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_ReadFileFromDisk">
+      <Parameter Name="filePath" Mode="In" Type="String" />
+      <Parameter Name="fileBlob" Mode="InOut" Type="Binary" />
+      <Parameter Name="testPar" Mode="In" Type="Int32" />
+      <Parameter Name="asd" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="SP_TEST_PROCEDURE">
+      <Parameter Name="filePath" Mode="In" Type="String" />
+      <Parameter Name="amount" Mode="InOut" Type="Decimal" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

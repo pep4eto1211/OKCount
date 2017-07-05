@@ -1,0 +1,572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ApiCalls">
+    <Key>
+      <PropertyRef Name="ApiCallId" />
+    </Key>
+    <Property Name="ApiCallId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ApiCallRecord" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="BackgroundCallLogs">
+    <Key>
+      <PropertyRef Name="BackgroundCallLogId" />
+    </Key>
+    <Property Name="BackgroundCallLogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="BackgroundCallLogTime" Type="datetime" Nullable="false" />
+    <Property Name="BackgroundCallLogMessage" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="BlobTable">
+    <Key>
+      <PropertyRef Name="BlobId" />
+    </Key>
+    <Property Name="BlobId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Blob" Type="varbinary(max)" />
+    <Property Name="OriginalFileName" Type="nvarchar" MaxLength="200" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'TestDb.dbo.CsvTestTable' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CsvTestTable">
+          <Property Name="id" Type="int" />
+          <Property Name="name" Type="nvarchar" MaxLength="500" />
+        </EntityType>-->
+  <EntityType Name="Files">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar" MaxLength="200" Nullable="false" />
+  </EntityType>
+  <EntityType Name="InputAsset">
+    <Key>
+      <PropertyRef Name="GUID" />
+      <PropertyRef Name="TargetEnvaironment" />
+    </Key>
+    <Property Name="GUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TargetEnvaironment" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DataField" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="DateAdded" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Logs">
+    <Key>
+      <PropertyRef Name="LogId" />
+    </Key>
+    <Property Name="LogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DataFileName" Type="nvarchar" MaxLength="200" />
+    <Property Name="BlobId" Type="int" />
+  </EntityType>
+  <EntityType Name="QRTZ_BLOB_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="BLOB_DATA" Type="image" />
+  </EntityType>
+  <EntityType Name="QRTZ_CALENDARS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="CALENDAR_NAME" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="CALENDAR_NAME" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="CALENDAR" Type="image" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_CRON_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="CRON_EXPRESSION" Type="nvarchar" MaxLength="120" Nullable="false" />
+    <Property Name="TIME_ZONE_ID" Type="nvarchar" MaxLength="80" />
+  </EntityType>
+  <EntityType Name="QRTZ_FIRED_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="ENTRY_ID" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="ENTRY_ID" Type="nvarchar" MaxLength="95" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="INSTANCE_NAME" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="FIRED_TIME" Type="bigint" Nullable="false" />
+    <Property Name="SCHED_TIME" Type="bigint" Nullable="false" />
+    <Property Name="PRIORITY" Type="int" Nullable="false" />
+    <Property Name="STATE" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="JOB_NAME" Type="nvarchar" MaxLength="150" />
+    <Property Name="JOB_GROUP" Type="nvarchar" MaxLength="150" />
+    <Property Name="IS_NONCONCURRENT" Type="bit" />
+    <Property Name="REQUESTS_RECOVERY" Type="bit" />
+  </EntityType>
+  <EntityType Name="QRTZ_JOB_DETAILS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="JOB_NAME" />
+      <PropertyRef Name="JOB_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="JOB_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="JOB_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="250" />
+    <Property Name="JOB_CLASS_NAME" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="IS_DURABLE" Type="bit" Nullable="false" />
+    <Property Name="IS_NONCONCURRENT" Type="bit" Nullable="false" />
+    <Property Name="IS_UPDATE_DATA" Type="bit" Nullable="false" />
+    <Property Name="REQUESTS_RECOVERY" Type="bit" Nullable="false" />
+    <Property Name="JOB_DATA" Type="image" />
+  </EntityType>
+  <EntityType Name="QRTZ_LOCKS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="LOCK_NAME" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="LOCK_NAME" Type="nvarchar" MaxLength="40" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_PAUSED_TRIGGER_GRPS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_SCHEDULER_STATE">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="INSTANCE_NAME" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="INSTANCE_NAME" Type="nvarchar" MaxLength="200" Nullable="false" />
+    <Property Name="LAST_CHECKIN_TIME" Type="bigint" Nullable="false" />
+    <Property Name="CHECKIN_INTERVAL" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_SIMPLE_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="REPEAT_COUNT" Type="int" Nullable="false" />
+    <Property Name="REPEAT_INTERVAL" Type="bigint" Nullable="false" />
+    <Property Name="TIMES_TRIGGERED" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QRTZ_SIMPROP_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="STR_PROP_1" Type="nvarchar" MaxLength="512" />
+    <Property Name="STR_PROP_2" Type="nvarchar" MaxLength="512" />
+    <Property Name="STR_PROP_3" Type="nvarchar" MaxLength="512" />
+    <Property Name="INT_PROP_1" Type="int" />
+    <Property Name="INT_PROP_2" Type="int" />
+    <Property Name="LONG_PROP_1" Type="bigint" />
+    <Property Name="LONG_PROP_2" Type="bigint" />
+    <Property Name="DEC_PROP_1" Type="numeric" Precision="13" Scale="4" />
+    <Property Name="DEC_PROP_2" Type="numeric" Precision="13" Scale="4" />
+    <Property Name="BOOL_PROP_1" Type="bit" />
+    <Property Name="BOOL_PROP_2" Type="bit" />
+  </EntityType>
+  <EntityType Name="QRTZ_TRIGGERS">
+    <Key>
+      <PropertyRef Name="SCHED_NAME" />
+      <PropertyRef Name="TRIGGER_NAME" />
+      <PropertyRef Name="TRIGGER_GROUP" />
+    </Key>
+    <Property Name="SCHED_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TRIGGER_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="TRIGGER_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="JOB_NAME" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="JOB_GROUP" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="250" />
+    <Property Name="NEXT_FIRE_TIME" Type="bigint" />
+    <Property Name="PREV_FIRE_TIME" Type="bigint" />
+    <Property Name="PRIORITY" Type="int" />
+    <Property Name="TRIGGER_STATE" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="TRIGGER_TYPE" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="START_TIME" Type="bigint" Nullable="false" />
+    <Property Name="END_TIME" Type="bigint" />
+    <Property Name="CALENDAR_NAME" Type="nvarchar" MaxLength="200" />
+    <Property Name="MISFIRE_INSTR" Type="int" />
+    <Property Name="JOB_DATA" Type="image" />
+  </EntityType>
+  <EntityType Name="ScheduledJobs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="TriggerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Scores">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JsonData" Type="ntext" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TestAsset">
+    <Key>
+      <PropertyRef Name="GUID" />
+      <PropertyRef Name="TargerEnvaironment" />
+      <PropertyRef Name="BucketId" />
+    </Key>
+    <Property Name="GUID" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="TargerEnvaironment" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="DataField" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="BucketId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TestBucket">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="timeInserted" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'TestDb.dbo.TestProcedureTable' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="TestProcedureTable">
+          <Property Name="Test" Type="nvarchar" MaxLength="50" />
+        </EntityType>-->
+  <EntityType Name="AggregatedCounter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Value" Type="bigint" Nullable="false" />
+    <Property Name="ExpireAt" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Counter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Value" Type="smallint" Nullable="false" />
+    <Property Name="ExpireAt" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Hash">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Field" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="ExpireAt" Type="datetime2" Precision="7" />
+  </EntityType>
+  <EntityType Name="Job">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StateId" Type="int" />
+    <Property Name="StateName" Type="nvarchar" MaxLength="20" />
+    <Property Name="InvocationData" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Arguments" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+    <Property Name="ExpireAt" Type="datetime" />
+  </EntityType>
+  <EntityType Name="JobParameter">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="40" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="JobQueue">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Queue" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FetchedAt" Type="datetime" />
+  </EntityType>
+  <EntityType Name="List">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="ExpireAt" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Schema">
+    <Key>
+      <PropertyRef Name="Version" />
+    </Key>
+    <Property Name="Version" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Server">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Data" Type="nvarchar(max)" />
+    <Property Name="LastHeartbeat" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Set">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Key" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Score" Type="float" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="ExpireAt" Type="datetime" />
+  </EntityType>
+  <EntityType Name="State">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="Reason" Type="nvarchar" MaxLength="100" />
+    <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+    <Property Name="Data" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_HangFire_JobParameter_Job">
+    <End Role="Job" Type="Self.Job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="JobParameter" Type="Self.JobParameter" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="JobParameter">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HangFire_State_Job">
+    <End Role="Job" Type="Self.Job" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="State" Type="Self.State" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="State">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Logs_BlobTable">
+    <End Role="BlobTable" Type="Self.BlobTable" Multiplicity="0..1" />
+    <End Role="Logs" Type="Self.Logs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BlobTable">
+        <PropertyRef Name="BlobId" />
+      </Principal>
+      <Dependent Role="Logs">
+        <PropertyRef Name="BlobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS">
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QRTZ_CRON_TRIGGERS" Type="Self.QRTZ_CRON_TRIGGERS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_CRON_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS">
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QRTZ_SIMPLE_TRIGGERS" Type="Self.QRTZ_SIMPLE_TRIGGERS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_SIMPLE_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS">
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QRTZ_SIMPROP_TRIGGERS" Type="Self.QRTZ_SIMPROP_TRIGGERS" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_SIMPROP_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="TRIGGER_NAME" />
+        <PropertyRef Name="TRIGGER_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS">
+    <End Role="QRTZ_JOB_DETAILS" Type="Self.QRTZ_JOB_DETAILS" Multiplicity="1" />
+    <End Role="QRTZ_TRIGGERS" Type="Self.QRTZ_TRIGGERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="QRTZ_JOB_DETAILS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="JOB_NAME" />
+        <PropertyRef Name="JOB_GROUP" />
+      </Principal>
+      <Dependent Role="QRTZ_TRIGGERS">
+        <PropertyRef Name="SCHED_NAME" />
+        <PropertyRef Name="JOB_NAME" />
+        <PropertyRef Name="JOB_GROUP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_ReadFileFromDisk" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="filePath" Type="nvarchar" Mode="In" />
+    <Parameter Name="fileBlob" Type="varbinary(max)" Mode="InOut" />
+    <Parameter Name="testPar" Type="int" Mode="In" />
+    <Parameter Name="asd" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="SP_TEST_PROCEDURE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="filePath" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="amount" Type="decimal" Mode="InOut" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="TestDbModelStoreContainer">
+    <EntitySet Name="ApiCalls" EntityType="Self.ApiCalls" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BackgroundCallLogs" EntityType="Self.BackgroundCallLogs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BlobTable" EntityType="Self.BlobTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InputAsset" EntityType="Self.InputAsset" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_BLOB_TRIGGERS" EntityType="Self.QRTZ_BLOB_TRIGGERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_CALENDARS" EntityType="Self.QRTZ_CALENDARS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_CRON_TRIGGERS" EntityType="Self.QRTZ_CRON_TRIGGERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_FIRED_TRIGGERS" EntityType="Self.QRTZ_FIRED_TRIGGERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_JOB_DETAILS" EntityType="Self.QRTZ_JOB_DETAILS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_LOCKS" EntityType="Self.QRTZ_LOCKS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_PAUSED_TRIGGER_GRPS" EntityType="Self.QRTZ_PAUSED_TRIGGER_GRPS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_SCHEDULER_STATE" EntityType="Self.QRTZ_SCHEDULER_STATE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_SIMPLE_TRIGGERS" EntityType="Self.QRTZ_SIMPLE_TRIGGERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_SIMPROP_TRIGGERS" EntityType="Self.QRTZ_SIMPROP_TRIGGERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QRTZ_TRIGGERS" EntityType="Self.QRTZ_TRIGGERS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ScheduledJobs" EntityType="Self.ScheduledJobs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Scores" EntityType="Self.Scores" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TestAsset" EntityType="Self.TestAsset" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TestBucket" EntityType="Self.TestBucket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AggregatedCounter" EntityType="Self.AggregatedCounter" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="Counter" EntityType="Self.Counter" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="Hash" EntityType="Self.Hash" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="Job" EntityType="Self.Job" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="JobParameter" EntityType="Self.JobParameter" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="JobQueue" EntityType="Self.JobQueue" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="List" EntityType="Self.List" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="Schema" EntityType="Self.Schema" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="Server" EntityType="Self.Server" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="Set" EntityType="Self.Set" Schema="HangFire" store:Type="Tables" />
+    <EntitySet Name="State" EntityType="Self.State" Schema="HangFire" store:Type="Tables" />
+    <AssociationSet Name="FK_HangFire_JobParameter_Job" Association="Self.FK_HangFire_JobParameter_Job">
+      <End Role="Job" EntitySet="Job" />
+      <End Role="JobParameter" EntitySet="JobParameter" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HangFire_State_Job" Association="Self.FK_HangFire_State_Job">
+      <End Role="Job" EntitySet="Job" />
+      <End Role="State" EntitySet="State" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Logs_BlobTable" Association="Self.FK_Logs_BlobTable">
+      <End Role="BlobTable" EntitySet="BlobTable" />
+      <End Role="Logs" EntitySet="Logs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS" Association="Self.FK_QRTZ_CRON_TRIGGERS_QRTZ_TRIGGERS">
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+      <End Role="QRTZ_CRON_TRIGGERS" EntitySet="QRTZ_CRON_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS" Association="Self.FK_QRTZ_SIMPLE_TRIGGERS_QRTZ_TRIGGERS">
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+      <End Role="QRTZ_SIMPLE_TRIGGERS" EntitySet="QRTZ_SIMPLE_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS" Association="Self.FK_QRTZ_SIMPROP_TRIGGERS_QRTZ_TRIGGERS">
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+      <End Role="QRTZ_SIMPROP_TRIGGERS" EntitySet="QRTZ_SIMPROP_TRIGGERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS" Association="Self.FK_QRTZ_TRIGGERS_QRTZ_JOB_DETAILS">
+      <End Role="QRTZ_JOB_DETAILS" EntitySet="QRTZ_JOB_DETAILS" />
+      <End Role="QRTZ_TRIGGERS" EntitySet="QRTZ_TRIGGERS" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
